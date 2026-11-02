@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-Powered Secure Coding Assistant</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Secure Coding Assistant</h1>
+      <p class="sub">Static security analysis with optional local AI. Your code is never executed.</p>
+    </div>
+    <div class="pills">
+      <span id="api-status" class="pill">API: checking…</span>
+      <span id="ai-status" class="pill">AI: checking…</span>
+    </div>
+  </header>
+
+  <div id="error-banner" class="banner" role="alert" hidden>
+    <span id="error-text"></span>
+    <button id="error-close" type="button" aria-label="Dismiss error">&times;</button>
+  </div>
+  <div id="loading" class="loading" role="status" aria-live="polite" hidden>
+    <span class="spinner" aria-hidden="true"></span><span id="loading-text">Working…</span>
+  </div>
+
+  <main class="layout">
+    <section class="card" aria-labelledby="input-title">
+      <h2 id="input-title">Code</h2>
+      <div class="row">
+        <label for="language">Language</label>
+        <select id="language">
+          <option value="python" selected>Python</option>
+          <option value="javascript" disabled>JavaScript (planned)</option>
+          <option value="java" disabled>Java (planned)</option>
+        </select>
+        <span class="spacer"></span>
+        <button type="button" class="link" id="load-vulnerable">Load vulnerable sample</button>
+        <button type="button" class="link" id="load-safe">Load safe sample</button>
+      </div>
+      <label for="code-input" class="sr-only">Source code</label>
+      <textarea id="code-input" spellcheck="false" placeholder="Paste or type code here…"></textarea>
+      <div class="row buttons">
+        <button type="button" class="primary" id="btn-analyze">Analyze Code</button>
+        <button type="button" id="btn-explain">Explain</button>
+        <button type="button" id="btn-recommend">Secure Recommendations</button>
+        <button type="button" id="btn-rescan">Re-scan</button>
+      </div>
+      <p class="hint" id="baseline-hint">Re-scan compares your edited code with the code you last analyzed. Run Analyze first.</p>
+    </section>
+
+    <section class="card results" aria-labelledby="results-title">
+      <h2 id="results-title" class="sr-only">Results</h2>
+      <div class="tabs" role="tablist">
+        <button role="tab" class="tab active" data-tab="findings" aria-selected="true">Findings</button>
+        <button role="tab" class="tab" data-tab="explain" aria-selected="false">Explanation</button>
+        <button role="tab" class="tab" data-tab="recommend" aria-selected="false">Recommendations</button>
+        <button role="tab" class="tab" data-tab="rescan" aria-selected="false">Re-scan</button>
+        <button role="tab" class="tab" data-tab="assistant" aria-selected="false">Assistant</button>
+      </div>
+
+      <div id="panel-findings" class="panel"><p class="empty">Run <b>Analyze Code</b> to see findings.</p></div>
+      <div id="panel-explain" class="panel" hidden><p class="empty">Click <b>Explain</b> to get a summary of the code.</p></div>
+      <div id="panel-recommend" class="panel" hidden><p class="empty">Click <b>Secure Recommendations</b> for safer alternatives.</p></div>
+      <div id="panel-rescan" class="panel" hidden><p class="empty">Edit the code, then click <b>Re-scan</b>.</p></div>
+      <div id="panel-assistant" class="panel" hidden>
+        <div class="row">
+          <label for="assistant-op">Operation</label>
+          <select id="assistant-op">
+            <option value="explain">Explain Code</option>
+            <option value="debug">Debug Code</option>
+            <option value="generate">Generate Code</option>
+            <option value="improve">Improve Code</option>
+            <option value="question" selected>Ask General Question</option>
+          </select>
+        </div>
+        <label for="assistant-prompt" class="sr-only">Prompt</label>
+        <textarea id="assistant-prompt" class="small" placeholder="Describe what you need (required for Generate and Ask)…"></textarea>
+        <p class="hint">Explain, Debug and Improve use the code in the editor. Needs a local AI model.</p>
+        <button type="button" class="primary" id="btn-assistant">Run</button>
+        <div id="assistant-output"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">Static analysis cannot find every vulnerability and may report false positives. AI output is unverified.</footer>
+  <script src="script.js"></script>
+</body>
+</html>
